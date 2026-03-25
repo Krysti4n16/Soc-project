@@ -1,0 +1,97 @@
+{
+  "name": "nokia-lab",
+  "type": "clab",
+  "clab": {
+    "config": {
+      "prefix": "clab",
+      "mgmt": {
+        "network": "clab",
+        "bridge": "br-b04e070be357",
+        "ipv4-subnet": "172.20.20.0/24",
+        "ipv4-gw": "172.20.20.1",
+        "ipv6-subnet": "3fff:172:20:20::/64",
+        "ipv6-gw": "3fff:172:20:20::1",
+        "mtu": 1500,
+        "external-access": true
+      }
+    }
+  },
+  "nodes": {
+    "router1": {
+      "index": "0",
+      "shortname": "router1",
+      "longname": "clab-nokia-lab-router1",
+      "fqdn": "router1.nokia-lab.io",
+      "group": "",
+      "labdir": "/workspaces/network-lab/clab-nokia-lab/router1",
+      "kind": "srl",
+      "image": "ghcr.io/nokia/srlinux:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.3",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::3",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "1a:86:00:00:00:00",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-b04e070be357",
+        "clab-node-group": "",
+        "clab-node-kind": "srl",
+        "clab-node-lab-dir": "/workspaces/network-lab/clab-nokia-lab/router1",
+        "clab-node-name": "router1",
+        "clab-node-type": "ixrd2l",
+        "clab-owner": "vscode",
+        "clab-topo-file": "/workspaces/network-lab/lab.clab.yml",
+        "containerlab": "nokia-lab"
+      },
+      "port-bindings": [
+      ]
+    },
+    "router2": {
+      "index": "1",
+      "shortname": "router2",
+      "longname": "clab-nokia-lab-router2",
+      "fqdn": "router2.nokia-lab.io",
+      "group": "",
+      "labdir": "/workspaces/network-lab/clab-nokia-lab/router2",
+      "kind": "srl",
+      "image": "ghcr.io/nokia/srlinux:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.2",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::2",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "1a:00:01:00:00:00",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-b04e070be357",
+        "clab-node-group": "",
+        "clab-node-kind": "srl",
+        "clab-node-lab-dir": "/workspaces/network-lab/clab-nokia-lab/router2",
+        "clab-node-name": "router2",
+        "clab-node-type": "ixrd2l",
+        "clab-owner": "vscode",
+        "clab-topo-file": "/workspaces/network-lab/lab.clab.yml",
+        "containerlab": "nokia-lab"
+      },
+      "port-bindings": [
+      ]
+    }
+  },
+  "links": [
+    {
+      "a": {
+        "node": "router1",
+        "interface": "e1-1",
+        "mac": "aa:c1:ab:d7:21:f2",
+        "peer": "z"
+      },
+      "z": {
+        "node": "router2",
+        "interface": "e1-1",
+        "mac": "aa:c1:ab:4f:a9:d4",
+        "peer": "a"
+      }
+    }
+  ]
+}

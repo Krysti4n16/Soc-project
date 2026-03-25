@@ -1,0 +1,14 @@
+name: nokia-lab
+
+topology:
+  nodes:
+    router1:
+      kind: srl
+      image: ghcr.io/nokia/srlinux:latest
+    
+    router2:
+      kind: srl
+      image: ghcr.io/nokia/srlinux:latest
+
+  links:
+    - endpoints: ["router1:e1-1", "router2:e1-1"]
