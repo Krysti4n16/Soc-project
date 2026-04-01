@@ -1,0 +1,62 @@
+%YAML 1.1
+---
+vars:
+  address-groups:
+    HOME_NET: "[192.168.0.0/16,10.0.0.0/8,172.16.0.0/12]"
+    EXTERNAL_NET: "!$HOME_NET"
+
+  port-groups:
+    HTTP_PORTS: "80"
+    HTTPS_PORTS: "443"
+    DNS_PORTS: "53"
+
+default-log-dir: /Users/krystian/Desktop/soc-project/suricata/logs
+
+outputs:
+  - eve-log:
+      enabled: yes
+      filetype: regular
+      filename: eve.json
+      types:
+        - alert:
+            payload: yes
+            payload-buffer-size: 4kb
+            metadata: yes
+        - dns:
+            query: yes
+            answer: yes
+        - http:
+            extended: yes
+        - tls:
+            extended: yes
+
+  - fast:
+      enabled: yes
+      filename: fast.log
+      append: yes
+
+af-packet:
+  - interface: en0
+    threads: auto
+    cluster-id: 99
+    cluster-type: cluster_flow
+    defrag: yes
+
+pcap:
+  - interface: en0
+
+default-rule-path: /Users/krystian/Desktop/soc-project/suricata/rules
+
+rule-files:
+  - emerging-malware.rules
+  - emerging-scan.rules
+  - emerging-dos.rules
+  - emerging-exploit.rules
+  - emerging-trojan.rules
+  - emerging-attack_response.rules
+
+logging:
+  default-log-level: notice
+  outputs:
+    - console:
+        enabled: yes
