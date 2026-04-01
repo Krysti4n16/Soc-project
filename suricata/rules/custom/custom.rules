@@ -1,0 +1,45 @@
+# ============================================================
+# SOC Lab — Custom Suricata Rules
+# Author: Krysti4n16
+# ============================================================
+
+# ------------------------------------------------------------
+# CATEGORY: Network Scan Detection
+# ------------------------------------------------------------
+alert tcp any any -> $HOME_NET any (msg:"SOC-001 Possible port scan detected"; flags:S; threshold: type both, track by_src, count 20, seconds 3; classtype:attempted-recon; sid:9000001; rev:1;)
+alert tcp any any -> $HOME_NET 22 (msg:"SOC-002 SSH port scan attempt"; flags:S; threshold: type both, track by_src, count 5, seconds 60; classtype:attempted-recon; sid:9000002; rev:1;)
+alert tcp any any -> $HOME_NET [21,22,23,3389,5900,5901] (msg:"SOC-003 Admin service port scan"; flags:S; threshold: type both, track by_src, count 3, seconds 10; classtype:attempted-admin; sid:9000003; rev:1;)
+
+# ------------------------------------------------------------
+# CATEGORY: Brute Force Detection
+# ------------------------------------------------------------
+alert tcp any any -> $HOME_NET 22 (msg:"SOC-004 SSH brute force attempt"; flow:to_server,established; content:"SSH"; threshold: type both, track by_src, count 10, seconds 60; classtype:attempted-user; sid:9000004; rev:1;)
+alert http any any -> $HOME_NET any (msg:"SOC-005 HTTP Basic Auth brute force"; flow:to_server,established; http.header; content:"Authorization: Basic"; threshold: type both, track by_src, count 10, seconds 30; classtype:attempted-user; sid:9000005; rev:1;)
+
+# ------------------------------------------------------------
+# CATEGORY: Malware / C2 Communication
+# ------------------------------------------------------------
+alert tcp any any -> any [9001,9030] (msg:"SOC-006 Possible Tor network communication"; flow:to_server,established; classtype:policy-violation; sid:9000006; rev:1;)
+alert tcp $HOME_NET any -> $EXTERNAL_NET any (msg:"SOC-007 Possible C2 beaconing — repeated outbound connection"; flow:to_server; threshold: type both, track by_src, count 10, seconds 300; classtype:trojan-activity; sid:9000007; rev:1;)
+alert http $HOME_NET any -> $EXTERNAL_NET any (msg:"SOC-008 Suspicious User-Agent — possible exploitation tool"; flow:to_server,established; http.user_agent; content:"python-requests"; classtype:trojan-activity; sid:9000008; rev:1;)
+alert http $HOME_NET any -> $EXTERNAL_NET any (msg:"SOC-009 Suspicious User-Agent — curl in automated context"; flow:to_server,established; http.user_agent; content:"curl/"; threshold: type both, track by_src, count 20, seconds 60; classtype:trojan-activity; sid:9000009; rev:1;)
+
+# ------------------------------------------------------------
+# CATEGORY: Data Exfiltration
+# ------------------------------------------------------------
+alert tcp $HOME_NET any -> $EXTERNAL_NET any (msg:"SOC-010 Large HTTP POST — possible data exfiltration"; flow:to_server,established; content:"POST "; depth:5; dsize:>10000; classtype:policy-violation; sid:9000010; rev:2;)
+alert http $HOME_NET any -> $EXTERNAL_NET any (msg:"SOC-011 Base64 encoded data in HTTP request body"; flow:to_server,established; content:"base64"; classtype:policy-violation; sid:9000011; rev:2;)
+alert udp any any -> any 53 (msg:"SOC-012 Possible DNS tunneling — unusually large packet"; dsize:>100; classtype:policy-violation; sid:9000012; rev:2;)
+
+# ------------------------------------------------------------
+# CATEGORY: Defense Evasion
+# ------------------------------------------------------------
+alert http any any -> $HOME_NET any (msg:"SOC-013 URL encoded payload in request — possible injection"; flow:to_server,established; http.uri; content:"%3C%73%63%72%69%70%74%3E"; classtype:web-application-attack; sid:9000013; rev:1;)
+alert http $HOME_NET any -> $EXTERNAL_NET any (msg:"SOC-014 PowerShell download cradle detected"; flow:to_server,established; http.uri; content:"IEX"; classtype:trojan-activity; sid:9000014; rev:1;)
+
+# ------------------------------------------------------------
+# CATEGORY: Suspicious DNS
+# ------------------------------------------------------------
+alert dns any any -> any 53 (msg:"SOC-015 DNS query to suspicious TLD — .onion"; dns.query; content:".onion"; classtype:policy-violation; sid:9000015; rev:1;)
+alert dns any any -> any 53 (msg:"SOC-016 DNS query to suspicious TLD — .ru"; dns.query; content:".ru"; threshold: type both, track by_src, count 10, seconds 60; classtype:policy-violation; sid:9000016; rev:1;)
+alert dns $HOME_NET any -> any 53 (msg:"SOC-017 High DNS query rate — possible DGA malware"; threshold: type both, track by_src, count 50, seconds 10; classtype:trojan-activity; sid:9000017; rev:1;)
