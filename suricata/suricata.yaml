@@ -54,6 +54,7 @@ rule-files:
   - emerging-exploit.rules
   - emerging-trojan.rules
   - emerging-attack_response.rules
+  - custom/custom.rules
 
 logging:
   default-log-level: notice
