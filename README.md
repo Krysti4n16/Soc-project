@@ -212,12 +212,19 @@ Soc-project/
 │   └── rules/custom/
 │       └── custom.rules        # 17 custom detection rules
 ├── docs/
-│   |                           # Kibana dashboard
+│   |                          
 │   ├── IR-001-discovery.md
 │   ├── IR-002-persistence.md
 │   ├── IR-003-credential-access.md
 │   ├── IR-004-defense-evasion.md
 │   └── IR-005-exfiltration.md
+├── dashboards/
+|   |                           # Kibana dashboards
+│   ├── Alerts_by_severity.png
+│   ├── Alerts_over_time.png
+│   ├── Top_processes.png
+│   ├── Events_by_level.png
+│   └── Soc_alerts.png
 ├── tests/
 │   └── test_rules.py           # Automated test suite
 ├── .github/
