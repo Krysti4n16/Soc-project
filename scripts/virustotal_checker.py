@@ -5,7 +5,7 @@ import re
 import time
 from datetime import datetime, timezone
 
-ES_URL= "http://localhost:9200"
+ES_URL= os.environ.get("ES_URL", "http://localhost:9200")
 VT_INDEX= "soc-virustotal"
 
 def get_api_key():

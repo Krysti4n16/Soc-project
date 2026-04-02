@@ -1,6 +1,6 @@
 # Incident Report — IR-004
 **Date:** 2026-04-01  
-**Analyst:** Krysti4n16  
+**Analyst:** Krystian  
 **Severity:** CRITICAL  
 **Status:** Resolved (Simulated)
 

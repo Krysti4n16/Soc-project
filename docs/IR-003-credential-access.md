@@ -1,6 +1,6 @@
 # Incident Report — IR-003
 **Date:** 2026-04-01  
-**Analyst:** Krysti4n16  
+**Analyst:** Krystian  
 **Severity:** HIGH  
 **Status:** Resolved (Simulated)
 

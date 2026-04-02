@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from slack_notifier import send_alert as slack_alert
 from virustotal_checker import run_vt_check, create_vt_index
 
-ES_URL= "http://localhost:9200"
+ES_URL= os.environ.get("ES_URL", "http://localhost:9200")
 INDEX= "soc-macos-logs"
 ALERTS_INDEX= "soc-alerts"
 
